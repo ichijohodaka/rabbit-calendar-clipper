@@ -30,8 +30,11 @@ F8キーでカレンダーを表示し、日付と時間帯を選んで OK ま�
 ---
 
 ## ⬇️ ダウンロード
+ 
+👉 [rabbit_calendar_clipboard.exe](https://github.com/ichijohodaka/rabbit-calendar-clipper/releases/download/tools/rabbit_calendar_clipboard.exe
+)
 
-[👉 最新のリリースはこちら](https://github.com/あなたのユーザー名/rabbit-calendar-clipper/releases)
+
 
 ---
 
