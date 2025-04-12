@@ -1,0 +1,25 @@
+# ---- 一時ファイル & バックアップ ----
+*.bak
+*.tmp
+*.log
+*.old
+*.swp
+Thumbs.db
+ehthumbs.db
+.DS_Store
+*.lnk
+
+# ---- AutoHotkey コンパイル済みファイル ----
+*.exe
+
+# ---- VSCode や他のエディタ系の設定 ----
+.vscode/
+.idea/
+
+# ---- OSレベルのゴミファイル ----
+desktop.ini
+
+# ---- その他、環境依存ファイル ----
+*.user
+*.suo
+*.orig
