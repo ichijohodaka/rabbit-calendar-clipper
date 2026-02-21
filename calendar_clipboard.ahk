@@ -1,47 +1,39 @@
 ﻿#SingleInstance Force
 
 F8::
+    global hCal, GuiOpen
+    GuiOpen := true
+
     Gui, +AlwaysOnTop
-
-    ; 🐰 うさぎ画像をGUI上部に表示（200x180）
     Gui, Add, Picture, x20 y10 w200 h180, rabbit_bg_resized_final.png
-
-    ; 📅 カレンダー（画像の下に配置）
     Gui, Add, MonthCal, vMyDate x20 y200
-
-    ; ⏰ 時間帯選択
-    Gui, Add, Text, x20 y370, 時間帯を選択:
-    Gui, Add, DropDownList, vMyTimeChoice x20 y390 w150, 8:40-10:10|10:30-12:00|13:00-14:30|14:50-16:20|16:40-18:10
-
-    ; ✅ OKボタン
-    Gui, Add, Button, gSubmitDate x200 y390, OK
+    GuiControlGet, hCal, Hwnd, MyDate
 
     Gui, Show,, うさぎカレンダー
 return
 
-SubmitDate:
-    Gui, Submit
+#If (GuiOpen)
 
-    output := ""
+Enter::
+NumpadEnter::   ; ← テンキーEnterも同じ処理
+    global hCal, GuiOpen
 
-    if (MyDate != "") {
-        FormatTime, year, %MyDate%, yyyy
-        FormatTime, month, %MyDate%, M
-        FormatTime, day, %MyDate%, d
-        FormatTime, weekday, %MyDate%, dddd
-        weekdayShort := SubStr(weekday, 1, 1)
-        formattedDate := year "年" month "月" day "日（" weekdayShort "）"
-        output .= formattedDate
-    }
+    ; 現在選択中の日付を取得（MCM_GETCURSEL = 0x1001）
+    VarSetCapacity(st, 16, 0) ; SYSTEMTIME
+    DllCall("SendMessage", "ptr", hCal, "uint", 0x1001, "ptr", 0, "ptr", &st)
 
-    if (MyTimeChoice != "") {
-        if (output != "")
-            output .= " "
-        output .= MyTimeChoice
-    }
+    y := NumGet(st, 0, "UShort")
+    m := NumGet(st, 2, "UShort")
+    d := NumGet(st, 6, "UShort")
 
-    if (output != "")
-        Clipboard := output
+    date := Format("{:04}{:02}{:02}", y, m, d)
+    FormatTime, weekday, %date%, dddd
+    weekdayShort := SubStr(weekday, 1, 1)
 
+    Clipboard := y "年" m "月" d "日（" weekdayShort "）"
+
+    GuiOpen := false
     Gui, Destroy
 return
+
+#If
