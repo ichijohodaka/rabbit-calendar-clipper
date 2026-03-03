@@ -1,5 +1,11 @@
 ﻿#SingleInstance Force
 
++F8::  ; Shift + F8：今日を yyyyMMdd でコピー（例 20260304）
+    FormatTime, today, , yyyyMMdd
+    Clipboard := today
+return
+
+
 F8::
     global hCal, GuiOpen
     GuiOpen := true
