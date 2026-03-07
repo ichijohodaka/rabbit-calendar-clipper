@@ -1,17 +1,24 @@
 ﻿#SingleInstance Force
 
-+F8::  ; Shift + F8：今日を yyyyMMdd でコピー（例 20260304）
+; 起動時に埋め込み画像を展開
+pngPath := A_Temp "\rabbit_bg_resized_final.png"
+if !FileExist(pngPath)
+{
+    FileInstall, rabbit_bg_resized_final.png, %pngPath%, 1
+}
+
++F8::  ; Shift + F8：今日を yyyyMMdd でコピー
     FormatTime, today, , yyyyMMdd
     Clipboard := today
 return
 
 
 F8::
-    global hCal, GuiOpen
+    global hCal, GuiOpen, pngPath
     GuiOpen := true
 
     Gui, +AlwaysOnTop
-    Gui, Add, Picture, x20 y10 w200 h180, rabbit_bg_resized_final.png
+    Gui, Add, Picture, x20 y10 w200 h180, %pngPath%
     Gui, Add, MonthCal, vMyDate x20 y200
     GuiControlGet, hCal, Hwnd, MyDate
 
@@ -21,10 +28,10 @@ return
 #If (GuiOpen)
 
 Enter::
-NumpadEnter::   ; ← テンキーEnterも同じ処理
+NumpadEnter::
     global hCal, GuiOpen
 
-    ; 現在選択中の日付を取得（MCM_GETCURSEL = 0x1001）
+    ; 現在選択中の日付を取得
     VarSetCapacity(st, 16, 0) ; SYSTEMTIME
     DllCall("SendMessage", "ptr", hCal, "uint", 0x1001, "ptr", 0, "ptr", &st)
 
